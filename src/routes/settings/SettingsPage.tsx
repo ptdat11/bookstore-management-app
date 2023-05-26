@@ -47,7 +47,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        inputClassName="w-[3.5rem]"
+                        inputClassName="w-14"
                         label="LƯỢNG NHẬP TỐI THIỂU"
                         type="number"
                         value={settings.MinImport}
@@ -64,7 +64,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        inputClassName="w-[3.5rem]"
+                        inputClassName="w-14"
                         label="TỒN TỐI ĐA TRƯỚC KHI NHẬP"
                         type="number"
                         value={settings.AmountNeedImport}
@@ -81,7 +81,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        inputClassName="w-[3.5rem]"
+                        inputClassName="w-[5.5rem]"
                         label="TIỀN NỢ TỐI ĐA (VNĐ)"
                         type="number"
                         value={settings.MaxDebt}
@@ -98,7 +98,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        inputClassName="w-[3.5rem]"
+                        inputClassName="w-14"
                         label="TỒN TỐI THIỂU SAU KHI BÁN"
                         type="number"
                         value={settings.BookAmountAfter}
