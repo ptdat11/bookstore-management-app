@@ -4,6 +4,7 @@ import combineClassnames from "../../submodules/string-processing/combine-classn
 import { THEME } from "../../settings";
 
 interface Props extends BaseProps {
+    inputClassName?: string,
     label?: string,
     type?: HTMLInputTypeAttribute,
     value?: number | string,
@@ -19,7 +20,8 @@ const Input: React.FC<Props> = React.memo((props) => {
                 props.className,
                 THEME.text
             )}
-            >
+            style={{...props.style}}
+        >
             <span
                 className={combineClassnames(
                     THEME.textHighlight
@@ -28,8 +30,8 @@ const Input: React.FC<Props> = React.memo((props) => {
                 {props.label}
             </span>
             <input
-                style={{...props.style}}
                 className={combineClassnames(
+                    props.inputClassName,
                     THEME.border,
                     THEME.bg,
                     "leading-8 ml-3 rounded-sm border"

@@ -47,7 +47,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        style={{width: "3.5rem"}}
+                        inputClassName="w-[3.5rem]"
                         label="LƯỢNG NHẬP TỐI THIỂU"
                         type="number"
                         value={settings.MinImport}
@@ -64,7 +64,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        style={{width: "3.5rem"}}
+                        inputClassName="w-[3.5rem]"
                         label="TỒN TỐI ĐA TRƯỚC KHI NHẬP"
                         type="number"
                         value={settings.AmountNeedImport}
@@ -81,7 +81,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        style={{width: "5.5rem"}}
+                        inputClassName="w-[3.5rem]"
                         label="TIỀN NỢ TỐI ĐA (VNĐ)"
                         type="number"
                         value={settings.MaxDebt}
@@ -98,7 +98,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        style={{width: "3.5rem"}}
+                        inputClassName="w-[3.5rem]"
                         label="TỒN TỐI THIỂU SAU KHI BÁN"
                         type="number"
                         value={settings.BookAmountAfter}
@@ -115,7 +115,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             "p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        style={{transform: "scale(1.5)"}}
+                        inputClassName="scale-150"
                         label="SỐ TIỀN THU KHÔNG VƯỢT QUÁ SỐ TIỀN NỢ"
                         type="checkbox"
                         checked={settings.PaidNotGreaterThanDebt}
