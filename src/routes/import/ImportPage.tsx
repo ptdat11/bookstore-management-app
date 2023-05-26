@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { BasePropsPage } from "../../submodules/base-props/base-props";
-import { useRecoilState } from "recoil";
-import { importBookState, importCountState } from "../../states/book-states";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { importBookState, importFlagState } from "../../states/book-states";
 import PageLayout from "../../components/layout/page-layout/PageLayout";
 import { dateToString } from "../../submodules/string-processing/date-string";
 import Table from "../../components/table/Table";
@@ -16,22 +16,24 @@ import AppConstraint from "../../interfaces/app-constraint";
 import PlusButton from "../../components/button/PlusButton";
 import Book from "../../interfaces/book";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";
-import { urlPrefix } from "../../settings";
 import ImportLogPOST from "../../interfaces/api-formats/import-logs-create";
 import CardRef from "../../interfaces/refs/card-ref";
 import Input from "../../components/form-input/Input";
 import useFetch from "../../hooks/useFetch";
+import { apiUrlSelector } from "../../states/system-states";
 
 interface Props extends BasePropsPage {}
 
 const ImportPage = React.memo((props: Props) => {
     const [books, setBooks] = useRecoilState(importBookState);
     const [date, setDate] = useState<Date>(new Date());
-    const importFlag = useRef(false);
+    const booksApiUrl = useRecoilValue(apiUrlSelector("books"));
+    const importApiUrl = useRecoilValue(apiUrlSelector("import-logs-create"));
+    const [importFlag, setImportFlag] = useRecoilState(importFlagState);
     const newBookNameRef = useRef<CardRef>(null);
     
     const importedBooks = useFetch<Book[]>({
-        url: `${urlPrefix}/api/books/`,
+        url: booksApiUrl,
         method: "GET"
     }, [importFlag]);
 
@@ -121,11 +123,11 @@ const ImportPage = React.memo((props: Props) => {
                 Amount: book.Amount,
                 TotalPrice: book.Amount * book.ImportPrice
             }));
-        let response = await jsonFetch(`${urlPrefix}/api/import-logs-create/`, "POST", data);
+        let response = await jsonFetch(importApiUrl, "POST", data);
         switch (response.status) {
             case 201:
                 toast.success("Nhập sách hoàn tất");
-                importFlag.current = !importFlag.current;
+                setImportFlag(!importFlag);
                 break;
             case 400:
                 toast.error(<>Không thể nhập sách tồn trong kho còn nhiều hơn <b>{s.AmountNeedImport}</b></>, { toastId: "IMPORT_EXCEED_STORED_AMOUNT" });

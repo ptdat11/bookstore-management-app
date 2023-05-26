@@ -1,10 +1,16 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import Book from "../interfaces/book";
 
-export const importCountState = atom<number>({
+export const importFlagState = atom<boolean>({
     key: "BOOK_IMPORT_COUNT",
-    default:0
+    default: false
 });
+export const importFlagSelector = selector<boolean>({
+    key: "",
+    get: ({get}) => {
+        return get(importFlagState);
+    }
+})
 
 export const importBookState = atom<Book[]>({
     key: "BOOK_IMPORT",

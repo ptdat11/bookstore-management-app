@@ -616,11 +616,6 @@ video {
   margin-bottom: 1rem;
 }
 
-.my-1 {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-}
-
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -645,10 +640,6 @@ video {
   margin-top: 0.75rem;
 }
 
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
 .box-border {
   box-sizing: border-box;
 }
@@ -667,6 +658,10 @@ video {
 
 .hidden {
   display: none;
+}
+
+.h-0 {
+  height: 0px;
 }
 
 .h-10 {
@@ -698,10 +693,6 @@ video {
   height: 100vh;
 }
 
-.h-0 {
-  height: 0px;
-}
-
 .min-h-\[3rem\] {
   min-height: 3rem;
 }
@@ -722,6 +713,10 @@ video {
   width: 1.25rem;
 }
 
+.w-\[3\.5rem\] {
+  width: 3.5rem;
+}
+
 .w-\[97\%\] {
   width: 97%;
 }
@@ -739,6 +734,14 @@ video {
   width: 100vw;
 }
 
+.w-\[5\.5rem\] {
+  width: 5.5rem;
+}
+
+.w-14 {
+  width: 3.5rem;
+}
+
 .grow {
   flex-grow: 1;
 }
@@ -749,6 +752,12 @@ video {
 
 .rotate-180 {
   --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-150 {
+  --tw-scale-x: 1.5;
+  --tw-scale-y: 1.5;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -835,8 +844,12 @@ video {
   border-radius: 0.125rem;
 }
 
-.rounded-bl-sm {
-  border-bottom-left-radius: 0.125rem;
+.rounded-bl-xl {
+  border-bottom-left-radius: 0.75rem;
+}
+
+.rounded-br-sm {
+  border-bottom-right-radius: 0.125rem;
 }
 
 .rounded-tl-sm {
@@ -845,18 +858,6 @@ video {
 
 .rounded-tr-xl {
   border-top-right-radius: 0.75rem;
-}
-
-.rounded-bl-xl {
-  border-bottom-left-radius: 0.75rem;
-}
-
-.rounded-tl-xl {
-  border-top-left-radius: 0.75rem;
-}
-
-.rounded-br-sm {
-  border-bottom-right-radius: 0.125rem;
 }
 
 .border {
@@ -1046,12 +1047,12 @@ video {
   transition-duration: 100ms;
 }
 
-.duration-75 {
-  transition-duration: 75ms;
-}
-
 .duration-200 {
   transition-duration: 200ms;
+}
+
+.duration-75 {
+  transition-duration: 75ms;
 }
 
 @font-face {

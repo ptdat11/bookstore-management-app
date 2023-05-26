@@ -7,16 +7,19 @@ import Input from "../../components/form-input/Input";
 import Table from "../../components/table/Table";
 import Report from "../../interfaces/report";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";
-import { urlPrefix } from "../../settings";
 import { BooksPerMonthGET } from "../../interfaces/api-formats/books";
 import TableRow from "../../components/table/TableRow";
 import TableCell from "../../components/table/TableCell";
+import { useRecoilValue } from "recoil";
+import { apiUrlSelector } from "../../states/system-states";
 
 interface Props extends BasePropsPage {}
 
 const MonthlyReportPage = React.memo((props: Props) => {
     const [booksReport, setBooksReport] = useState<Report[]>([]);
     const [debtReports, setDebtReport] = useState<Report[]>([]);
+    const booksReportApiUrl = useRecoilValue(apiUrlSelector("books-per-month"));
+    const debtReportApiUrl = useRecoilValue(apiUrlSelector("customers-per-month"));
 
     return (
         <PageLayout
@@ -45,7 +48,7 @@ const MonthlyReportPage = React.memo((props: Props) => {
                             }
 
                             console.log(data);
-                            let response = await jsonFetch(`${urlPrefix}/api/books-per-month/`, "GET", data);
+                            let response = await jsonFetch(booksReportApiUrl, "GET", data);
 
                             const report: Report[] = await response.json();
                             setBooksReport(report);
@@ -110,10 +113,10 @@ const MonthlyReportPage = React.memo((props: Props) => {
                             }
 
                             console.log(data);
-                            let response = await jsonFetch(`${urlPrefix}/api/customers-per-month/`, "GET", data);
+                            let response = await jsonFetch(debtReportApiUrl, "GET", data);
 
                             const report: Report[] = await response.json();
-                            setBooksReport(report);
+                            setDebtReport(report);
                         }}
                     />
 

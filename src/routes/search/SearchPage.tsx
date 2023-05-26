@@ -2,25 +2,27 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { BasePropsPage } from "../../submodules/base-props/base-props";
 import PageLayout from "../../components/layout/page-layout/PageLayout";
 import combineClassnames from "../../submodules/string-processing/combine-classname";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { authorCriterionState, categoryCriterionState } from "../../states/book-states";
 import FilterList from "./FilterList";
-import { THEME, urlPrefix } from "../../settings";
+import { THEME } from "../../settings";
 import Book from "../../interfaces/book";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";
 import { BooksGET } from "../../interfaces/api-formats/books";
 import Table from "../../components/table/Table";
 import TableRow from "../../components/table/TableRow";
 import TableCell from "../../components/table/TableCell";
+import { apiUrlSelector } from "../../states/system-states";
 
 interface Props extends BasePropsPage {}
 
-const SearchPage = ((props: Props) => {
+const SearchPage = React.memo((props: Props) => {
     const [categories, setCategories] = useRecoilState(categoryCriterionState);
     const [authors, setAuthors] = useRecoilState(authorCriterionState);
     const [searchKey, setSearchKey] = useState("");
     const [resultAppeared, setResultAppeared] = useState(false);
     const [queryResult, setQueryResult] = useState<Book[]>([]);
+    const booksApiUrl = useRecoilValue(apiUrlSelector("books"));
     const searchBarRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -45,7 +47,7 @@ const SearchPage = ((props: Props) => {
             Author: authors.join(","),
             Category: categories.join(","),
         }
-        const response = await jsonFetch(`${urlPrefix}/api/books/`, "GET", apiObj);
+        const response = await jsonFetch(booksApiUrl, "GET", apiObj);
         
         const books = await response.json();
         setResultAppeared(true);

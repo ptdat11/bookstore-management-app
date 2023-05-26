@@ -7,19 +7,22 @@ import AppConstraint from "../../interfaces/app-constraint";
 import LocalStorage from "../../submodules/local-storage/local-storage";
 import LargeButton from "../../components/button/LargeButton";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";
-import { THEME, urlPrefix } from "../../settings";
+import { THEME } from "../../settings";
 import { toast } from "react-toastify";
 import Hr from "../../components/Hr";
+import { useRecoilValue } from "recoil";
+import { apiUrlSelector } from "../../states/system-states";
 
 interface Props extends BasePropsPage {}
 
 const SettingsPage = React.memo((props: Props) => {
     const [settings, setSettings] = useState<AppConstraint>(LocalStorage.get("settings") as AppConstraint);
+    const settingsApiUrl = useRecoilValue(apiUrlSelector("settings"));
 
     const handleClickSave = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
 
-        let response = await jsonFetch(`${urlPrefix}/api/settings/`, "POST", settings);
+        let response = await jsonFetch(settingsApiUrl, "POST", settings);
         switch (response.status) {
             case 201:
                 LocalStorage.set("settings", settings);

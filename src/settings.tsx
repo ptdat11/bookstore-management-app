@@ -1,8 +1,6 @@
 import React from "react";
 import { ThemeSettings } from "./submodules/theme/theme-type";
 
-export const urlPrefix = "https://qlns.dipicorp.com";
-
 export const THEME: ThemeSettings = {
     bg: "bg-white dark:bg-slate-800",
     bgSemi: "bg-gray-300 dark:bg-slate-700",
