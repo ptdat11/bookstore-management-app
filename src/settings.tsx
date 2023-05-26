@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeSettings } from "./submodules/theme/theme-type";
+import { ThemeSettings } from "./submodules/theme/theme-settings";
 
 export const THEME: ThemeSettings = {
     bg: "bg-white dark:bg-slate-800",

@@ -709,12 +709,28 @@ video {
   width: 91.666667%;
 }
 
+.w-14 {
+  width: 3.5rem;
+}
+
+.w-32 {
+  width: 8rem;
+}
+
+.w-48 {
+  width: 12rem;
+}
+
 .w-5 {
   width: 1.25rem;
 }
 
-.w-\[3\.5rem\] {
-  width: 3.5rem;
+.w-7\/12 {
+  width: 58.333333%;
+}
+
+.w-\[5\.5rem\] {
+  width: 5.5rem;
 }
 
 .w-\[97\%\] {
@@ -734,12 +750,16 @@ video {
   width: 100vw;
 }
 
-.w-\[5\.5rem\] {
-  width: 5.5rem;
+.w-56 {
+  width: 14rem;
 }
 
-.w-14 {
-  width: 3.5rem;
+.w-52 {
+  width: 13rem;
+}
+
+.w-44 {
+  width: 11rem;
 }
 
 .grow {
@@ -763,10 +783,6 @@ video {
 
 .scale-y-0 {
   --tw-scale-y: 0;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1318,4 +1334,14 @@ button:focus-visible {
 .\[\&\>\*\:nth-child\(even\)\]\:border-x>*:nth-child(even) {
   border-left-width: 1px;
   border-right-width: 1px;
+}
+
+.\[\&\>\*\]\:my-3>* {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.\[\&\>\*\]\:my-1>* {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }

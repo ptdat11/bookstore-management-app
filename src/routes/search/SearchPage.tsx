@@ -109,7 +109,7 @@ const SearchPage = React.memo((props: Props) => {
                 {/* Result table */}
                 {resultAppeared &&
                     <Table
-                        className="mt-3"
+                        className="mt-3 mx-auto"
                         colWidths={[10, 30, 20, 20, 10]}
                         colNames={["STT", "Tên sách", "Thể loại", "Tác giả", "Số lượng"]}
                     >
