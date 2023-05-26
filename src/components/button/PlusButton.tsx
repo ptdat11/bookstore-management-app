@@ -12,7 +12,7 @@ const PlusButton: React.FC<Props> = React.memo((props) => {
         <button
             className={combineClassnames(
                 props.className,
-                "p-0 h-fit rounded-full border-none my-2"
+                "p-0 w-fit h-fit rounded-full border-none my-2"
             )}
             style={{...props.style}}
             onClick={props.onClick}

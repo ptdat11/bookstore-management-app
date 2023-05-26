@@ -9,7 +9,8 @@ interface Props extends BaseProps {
     type?: HTMLInputTypeAttribute,
     value?: number | string,
     checked?: boolean,
-    placeholder?: string
+    placeholder?: string,
+    readonly?: boolean,
     onChange?: React.ChangeEventHandler<HTMLInputElement>
 };
 
@@ -40,6 +41,7 @@ const Input: React.FC<Props> = React.memo((props) => {
                 value={props.value}
                 checked={props.checked}
                 placeholder={props.placeholder}
+                readOnly={props.readonly}
                 onChange={props.onChange}
             />
         </label>

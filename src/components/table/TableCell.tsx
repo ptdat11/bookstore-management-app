@@ -3,15 +3,19 @@ import { BaseProps } from "../../submodules/base-props/base-props";
 import combineClassnames from "../../submodules/string-processing/combine-classname";
 import { stringToStrNumber } from "../../submodules/string-processing/number-string";
 import CardRef from "../../interfaces/refs/card-ref";
+import AutoComplete from "../form-input/AutoComplete";
+import AutoCompleteRef from "../../interfaces/refs/autocomplete-ref";
 
 interface Props extends BaseProps {
     value?: string | number,
-    disablePointerEvent?: boolean,
-    onChange?: React.ChangeEventHandler<HTMLTextAreaElement>
+    readOnly?: boolean,
+    onChange?: React.ChangeEventHandler<HTMLTextAreaElement>,
+    suggestFrom?: string[],
+    onClickSuggestion?: React.MouseEventHandler<HTMLLIElement>
 }
 
 const TableCell = (props: Props, ref: ForwardedRef<CardRef>) => {
-    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+    const textAreaRef = useRef<AutoCompleteRef>(null);
 
     useImperativeHandle(ref, () => ({
         focus: () => {
@@ -27,27 +31,29 @@ const TableCell = (props: Props, ref: ForwardedRef<CardRef>) => {
     const resizeTextArea = () => {
         let tArea = textAreaRef.current;
         if (tArea) {
-            tArea.style.height = "0px";
-            tArea.style.height = tArea.scrollHeight + "px";
+            tArea.setHeight("0px");
+            tArea.setHeight(tArea.scrollHeight() + "px");
         }
     }
-    useEffect(resizeTextArea, [textAreaRef.current?.scrollHeight]);
+    useEffect(resizeTextArea, [textAreaRef.current?.scrollHeight()]);
 
     return (
         <td
             className={combineClassnames(
                 props.className,
-                "py-2 border-inherit"
+                "relative py-2 border-inherit"
             )}
         >
-            <textarea
+            <AutoComplete 
                 ref={textAreaRef}
                 className={combineClassnames(
-                    props.disablePointerEvent ? "pointer-events-none"  : "",
                     "h-auto text-center bg-inherit block w-full resize-none outline-none"
                 )}
                 style={{...props.style}}
                 value={val}
+                readOnly={props.readOnly}
+                suggestFrom={props.suggestFrom}
+                onClickSuggestion={props.onClickSuggestion}
                 onChange={(e) => {
                     resizeTextArea();
                     if (props.onChange)

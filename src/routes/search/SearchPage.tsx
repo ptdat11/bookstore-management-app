@@ -119,23 +119,23 @@ const SearchPage = React.memo((props: Props) => {
                                 disableDeleteButton
                             >
                                 <TableCell
-                                    disablePointerEvent
+                                    readOnly
                                     value={index + 1}
                                 />
                                 <TableCell
-                                    disablePointerEvent
+                                    readOnly
                                     value={res.Name}
                                 />
                                 <TableCell
-                                    disablePointerEvent
+                                    readOnly
                                     value={res.Category}
                                 />
                                 <TableCell
-                                    disablePointerEvent
+                                    readOnly
                                     value={res.Author}
                                 />
                                 <TableCell
-                                    disablePointerEvent
+                                    readOnly
                                     value={res.Amount}
                                 />
                             </TableRow>

@@ -93,8 +93,8 @@ const ImportPage = React.memo((props: Props) => {
         }
 
         const lastBook = books.at(-1) as Book;
-        if ([lastBook.Name, lastBook.Category, lastBook.Author].includes("")) {
-            toast.error("Hãy nhập đầy đủ thông tin");
+        if (books.map(book => book.Name).includes("")) {
+            toast.error("Hãy nhập đầy đủ tên sách");
             return;
         }
 
@@ -146,10 +146,11 @@ const ImportPage = React.memo((props: Props) => {
                 style={{...props.style}}
             >
                 <Input 
-                    className="my-3 pointer-events-none"
+                    className="my-3"
                     label="Ngày nhập:" 
                     type="date"
                     value={dateToString(date)}
+                    readonly
                     onChange={handleChangeDate}
                 />
                 <Table
@@ -166,12 +167,33 @@ const ImportPage = React.memo((props: Props) => {
                                 }}
                             >
                                 <TableCell 
-                                    disablePointerEvent
+                                    readOnly
                                     value={book.id + 1}
                                 />
                                 
                                 <TableCell 
                                     ref={newBookNameRef}
+                                    suggestFrom={
+                                        importedBooks.data ? 
+                                        importedBooks.data.map(book => book.Name) :
+                                        undefined
+                                    }
+                                    onClickSuggestion={(e) => {
+                                        if (!importedBooks.data) {
+                                            return;
+                                        }
+                                        
+                                        const newBook: Book = importedBooks.data.filter(bo => bo.Name === e.currentTarget.childNodes[0].textContent)[0];
+                                        const newBooks = books.map((b, i) => {
+                                            if (i !== index) {
+                                                return b;
+                                            }
+                                            
+                                            return { ...newBook, Amount: b.Amount, id: index};
+                                        });
+                                        
+                                        setBooks(newBooks);
+                                    }}
                                     onChange={(e) => {
                                         const newBooks = books.map((book, i) => {
                                             if (i !== index) {

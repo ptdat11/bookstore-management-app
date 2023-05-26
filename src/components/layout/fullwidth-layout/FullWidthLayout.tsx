@@ -42,7 +42,7 @@ const FullWidthLayout = React.memo((props: Props) => {
             id={props.id}
             className={combineClassnames(
                 props.className,
-                "w-screen h-screen flex justify-end"
+                "w-screen h-screen flex justify-end overflow-y-hidden"
             )}
             style={{...props.style}}
         >

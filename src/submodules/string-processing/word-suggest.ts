@@ -1,4 +1,4 @@
-import levenshteinDistance from "../levenshtein/levenshtein-distance";
+import levenshteinDistance from "./levenshtein-distance";
 
 const suggestWords = (query: string, from: string[]) => {
     query = query.toLowerCase();

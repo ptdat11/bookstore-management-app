@@ -67,27 +67,27 @@ const MonthlyReportPage = React.memo((props: Props) => {
                                 >
                                     <TableCell 
                                         value={index + 1}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell 
                                         value={report.Name}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell
                                         value={report.result_by_month?.FirstAmount}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell 
                                         value={report.result_by_month?.ImportCount}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell 
                                         value={report.result_by_month?.LastAmount}
-                                        disablePointerEvent
+                                        readOnly
                                     />
                                 </TableRow>
                             );
@@ -132,27 +132,27 @@ const MonthlyReportPage = React.memo((props: Props) => {
                                 >
                                     <TableCell 
                                         value={index + 1}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell 
                                         value={report.Name}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell
                                         value={report.result_by_month?.FirstAmount}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell 
                                         value={report.result_by_month?.ImportCount}
-                                        disablePointerEvent
+                                        readOnly
                                     />
 
                                     <TableCell 
                                         value={report.result_by_month?.LastAmount}
-                                        disablePointerEvent
+                                        readOnly
                                     />
                                 </TableRow>
                             );

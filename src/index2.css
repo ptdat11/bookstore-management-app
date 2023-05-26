@@ -556,10 +556,6 @@ video {
   }
 }
 
-.pointer-events-none {
-  pointer-events: none;
-}
-
 .static {
   position: static;
 }
@@ -570,6 +566,10 @@ video {
 
 .absolute {
   position: absolute;
+}
+
+.relative {
+  position: relative;
 }
 
 .bottom-0 {
@@ -584,8 +584,16 @@ video {
   top: 0px;
 }
 
+.top-10 {
+  top: 2.5rem;
+}
+
 .z-10 {
   z-index: 10;
+}
+
+.z-\[2\] {
+  z-index: 2;
 }
 
 .m-1 {
@@ -693,6 +701,30 @@ video {
   height: 100vh;
 }
 
+.max-h-40 {
+  max-height: 10rem;
+}
+
+.max-h-5 {
+  max-height: 1.25rem;
+}
+
+.max-h-20 {
+  max-height: 5rem;
+}
+
+.max-h-28 {
+  max-height: 7rem;
+}
+
+.max-h-32 {
+  max-height: 8rem;
+}
+
+.max-h-36 {
+  max-height: 9rem;
+}
+
 .min-h-\[3rem\] {
   min-height: 3rem;
 }
@@ -748,18 +780,6 @@ video {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-56 {
-  width: 14rem;
-}
-
-.w-52 {
-  width: 13rem;
-}
-
-.w-44 {
-  width: 11rem;
 }
 
 .grow {
@@ -828,6 +848,10 @@ video {
   justify-content: space-between;
 }
 
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
 .overflow-y-scroll {
   overflow-y: scroll;
 }
@@ -890,6 +914,10 @@ video {
 
 .border-r {
   border-right-width: 1px;
+}
+
+.border-t {
+  border-top-width: 1px;
 }
 
 .border-t-0 {
@@ -1336,12 +1364,24 @@ button:focus-visible {
   border-right-width: 1px;
 }
 
-.\[\&\>\*\]\:my-3>* {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+.\[\&\>\*\]\:mx-auto>* {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .\[\&\>\*\]\:my-1>* {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+}
+
+.\[\&\>\*\]\:cursor-pointer>* {
+  cursor: pointer;
+}
+
+.\[\&\>\*\]\:border>* {
+  border-width: 1px;
+}
+
+.\[\&\>\*\]\:p-\[0\.3rem\]>* {
+  padding: 0.3rem;
 }
