@@ -1,7 +1,9 @@
 export interface BooksGET {
     Author?: string,
     Category?: string,
-    Name?: string
+    Name?: string,
+    Amount?: number,
+    ImportPrice?: number
 };
 
 export interface BooksPerMonthGET {

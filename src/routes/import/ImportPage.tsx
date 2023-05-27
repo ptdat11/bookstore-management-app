@@ -77,7 +77,7 @@ const ImportPage = React.memo((props: Props) => {
 
         const newBooks: Book[] = [
             ...books,
-            { id: newId, Name: "", Category: "", Author: "", Amount: 0, ImportPrice: 0 }
+            { id: newId, Name: "", Category: "", Author: "", Amount: LocalStorage.get<AppConstraint>("settings")?.MinImport as number, ImportPrice: 0 }
         ];
         setBooks(newBooks);
     };
@@ -152,10 +152,11 @@ const ImportPage = React.memo((props: Props) => {
             >
                 <Input 
                     className="my-3"
+                    inputClassName="w-48"
                     label="Ngày nhập:" 
                     type="datetime-local"
                     value={dateTimeToLocalISOString(dateTime)}
-                    // readonly
+                    readonly
                     onChange={handleChangeDate}
                 />
                 <Table

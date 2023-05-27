@@ -86,7 +86,7 @@ const BillCreatePage = React.memo((props: Props) => {
 
         const newBooks = [
             ...billDetail,
-            { id: newId, Name: "", Category: "", Author: "", Amount: 0, ImportPrice: 0 }
+            { id: newId, Name: "", Category: "", Author: "", Amount: 1, ImportPrice: 0 }
         ];
         setBillDetail(newBooks);
     };
@@ -155,10 +155,10 @@ const BillCreatePage = React.memo((props: Props) => {
         let response = await jsonFetch(billsApiUrl, "POST", data);
         switch (response.status) {
             case 201:
-                toast.success("Đã tạo hóa đơn thành công", { toastId: "BILL_SUCCESS" });
+                toast.success("Lập hóa đơn thành công", { toastId: "BILL_SUCCESS" });
                 break;
             case 400:
-                toast.error("Đã gặp sự cố trên server", { toastId: "BILL_SERVER_ERROR" });
+                toast.error("Server đã xảy ra sự cố", { toastId: "BILL_SERVER_ERROR" });
         }
     }
 
@@ -305,7 +305,7 @@ const BillCreatePage = React.memo((props: Props) => {
                     "flex flex-col items-end w-11/12"
                 )}
             >
-                <span className="block font-bold">Tổng tiền: <output>{sum}VNĐ</output></span>
+                <span className="block font-bold">Tổng tiền: <output>{stringToStrNumber(sum.toString())}VNĐ</output></span>
                 <label className="block flex">
                     <span>Số tiền trả:&nbsp;</span>
                     <textarea
@@ -323,7 +323,7 @@ const BillCreatePage = React.memo((props: Props) => {
                         cols={paid.toString().length + 2}
                     />&nbsp;VNĐ
                 </label>
-                <span className="font-bold block">Còn lại: <output>{sum - paid}VNĐ</output></span>
+                <span className="font-bold block">Còn lại: <output>{stringToStrNumber((sum - paid).toString())}VNĐ</output></span>
             </div>
             <Hr />
 

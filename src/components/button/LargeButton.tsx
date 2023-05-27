@@ -11,6 +11,7 @@ const LargeButton: React.FC<Props> = React.memo((props) => {
     return (
         <button
             className={combineClassnames(
+                props.className,
                 THEME.bgSemi,
                 THEME.active,
                 THEME.textHighlight,

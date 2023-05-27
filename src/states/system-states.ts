@@ -16,7 +16,7 @@ export const urlPrefixState = atom<string>({
     default: "https://qlns.dipicorp.com"
 });
 
-export type BookAPI = "books" | "import-logs-create" | "settings" | "books-per-month" | "bills" | "debt-logs" | "customers-per-month"
+export type BookAPI = "books" | "import-logs-create" | "settings" | "books-per-month" | "bills" | "debt-logs" | "customers-per-month" | "customers";
 export const apiUrlSelector = selectorFamily({
     key: "SYSTEM_API_URL",
     get: (api: BookAPI) => ({ get }) => {

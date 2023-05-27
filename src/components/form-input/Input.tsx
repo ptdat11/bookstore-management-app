@@ -36,7 +36,7 @@ const Input: React.FC<Props> = React.memo((props) => {
                     props.inputClassName,
                     THEME.border,
                     THEME.bg,
-                    "leading-8 ml-3 rounded-sm border"
+                    "h-min my-auto leading-8 ml-3 rounded-sm border"
                 )}
                 type={props.type}
                 value={props.value}

@@ -122,7 +122,7 @@ const MonthlyReportPage = React.memo((props: Props) => {
 
                     <Table
                         colWidths={[6, 35, 17, 17, 17]}
-                        colNames={["STT", "Khách hàng", "Nợ đầu", "Phát sinh", "Nợ cuối"]}
+                        colNames={["STT", "SĐT Khách hàng", "Nợ đầu", "Phát sinh", "Nợ cuối"]}
                     >
                         {debtReports.map((report, index) => {
                             return (
