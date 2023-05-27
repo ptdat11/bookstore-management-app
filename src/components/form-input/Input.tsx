@@ -11,7 +11,8 @@ interface Props extends BaseProps {
     checked?: boolean,
     placeholder?: string,
     readonly?: boolean,
-    onChange?: React.ChangeEventHandler<HTMLInputElement>
+    onChange?: React.ChangeEventHandler<HTMLInputElement>,
+    onBlur?: React.FocusEventHandler<HTMLInputElement>
 };
 
 const Input: React.FC<Props> = React.memo((props) => {
@@ -43,6 +44,7 @@ const Input: React.FC<Props> = React.memo((props) => {
                 placeholder={props.placeholder}
                 readOnly={props.readonly}
                 onChange={props.onChange}
+                onBlur={props.onBlur}
             />
         </label>
     );

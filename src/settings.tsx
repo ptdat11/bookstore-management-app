@@ -21,7 +21,7 @@ export const THEME: ThemeSettings = {
 export const PAGES: {
     title: string, 
     href: string
-    svg: React.JSX.Element
+    svg: React.ReactElement
 }[] = [
     {
         title: "Nhập sách",

@@ -1,60 +1,46 @@
+import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import FullWidthLayout from './components/layout/fullwidth-layout/FullWidthLayout';
+import { RouterProvider } from 'react-router-dom'
 import { Theme, ToastContainer } from 'react-toastify';
-import ImportPage from './routes/import/ImportPage';
 import 'react-toastify/dist/ReactToastify.css';
-import SearchPage from './routes/search/SearchPage';
-import SettingsPage from './routes/settings/SettingsPage';
 import { apiUrlSelector, themeState } from './states/system-states';
-import MonthlyReportPage from './routes/report/MonthlyReportPage';
-import PayDebtPage from './routes/debt/PayDebtPage';
-import BillCreatePage from './routes/bill/BillCreatePage';
 import useFetch from './hooks/useFetch';
 import LocalStorage from './submodules/local-storage/local-storage';
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <FullWidthLayout id="full-layout" />,
-    children: [
-      {
-        path: "/import",
-        element: <ImportPage id="import" />
-      },
-      {
-        path: "/bill",
-        element: <BillCreatePage id="bill" />
-      },
-      {
-        path: "/report",
-        element: <MonthlyReportPage id="report" />
-      },
-      {
-        path: "/search",
-        element: <SearchPage id="search" />
-      },
-      {
-        path: "/debt",
-        element: <PayDebtPage id="debt" />
-      },
-      {
-        path: "/settings",
-        element: <SettingsPage id="settings" />
-      }
-    ]
-  }
-]);
+import AppConstraint from './interfaces/app-constraint';
+import { jsonFetch } from "./submodules/networking/jsonFetch";
+import { router } from "./router";
 
 function App() {
   const [theme, setTheme] = useRecoilState(themeState);
   const settingsApiUrl = useRecoilValue(apiUrlSelector("settings"));
-  useFetch({
+
+  const appliedSettings = useFetch<AppConstraint[]>({
     url: settingsApiUrl,
-    method: "POST",
-    data: LocalStorage.get("settings")
+    method: "GET",
   }, []);
 
+  useEffect(() => {
+    let isCurrent = true;
+    const localSettings: AppConstraint | undefined = LocalStorage.get<AppConstraint>("settings");
+    if (appliedSettings.data) {
+      const serverSettings = appliedSettings.data.at(-1);
+      if (
+        localSettings?.PaidNotGreaterThanDebt !== serverSettings?.PaidNotGreaterThanDebt ||
+        localSettings?.AmountNeedImport !== serverSettings?.AmountNeedImport ||
+        localSettings?.BookAmountAfter !== serverSettings?.BookAmountAfter ||
+        localSettings?.MaxDebt !== serverSettings?.MaxDebt ||
+        localSettings?.MinImport !== serverSettings?.MinImport
+      ) {
+        if (isCurrent)
+          jsonFetch(settingsApiUrl, "POST", localSettings);
+      }
+    }
+
+    return () => {
+      isCurrent = false;
+    }
+  }, []);
+  
   return (
     <>
       <ToastContainer 

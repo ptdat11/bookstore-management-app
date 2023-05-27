@@ -16,6 +16,13 @@ import TableCell from "../../components/table/TableCell";
 import PlusButton from "../../components/button/PlusButton";
 import Hr from "../../components/Hr";
 import CardRef from "../../interfaces/refs/card-ref";
+import { dateTimeToLocalISOString, dateToString } from "../../submodules/string-processing/date-string";
+import { stringToStrNumber } from "../../submodules/string-processing/number-string";
+import LargeButton from "../../components/button/LargeButton";
+import AppConstraint from "../../interfaces/app-constraint";
+import LocalStorage from "../../submodules/local-storage/local-storage";
+import { BillPOST } from "../../interfaces/api-formats/bills";
+import { jsonFetch } from "../../submodules/networking/jsonFetch";
 
 interface Props extends BasePropsPage {}
 
@@ -23,15 +30,26 @@ const BillCreatePage = React.memo((props: Props) => {
     const [billDetail, setBillDetail] = useRecoilState(billDetailState);
     const [customer, setCustomer] = useState({FullName: "", PhoneNumber: ""});
     const [dateTime, setDateTime] = useState(new Date());
+    const [paid, setPaid] = useState(0);
     const newBookNameRef = useRef<CardRef>(null);
     const importFlag = useRecoilValue(importFlagSelector);
     const booksApiUrl = useRecoilValue(apiUrlSelector("books"));
     const billsApiUrl = useRecoilValue(apiUrlSelector("bills"));
+    let sellPriceMultiplier = 105 / 100;
+    let sum = billDetail.length > 0 ?
+        billDetail.map(book => book.ImportPrice * sellPriceMultiplier * book.Amount).
+            reduce((partialSum, next) => partialSum + next) :
+        0;
+    sum = Number.isNaN(sum) ? 0 : sum;
 
     const importedBooks = useFetch<Book[]>({
         url: booksApiUrl,
         method: "GET"
     }, [importFlag]);
+
+    useEffect(() => {
+        newBookNameRef.current?.focus();
+    }, [billDetail.length]);
 
     useEffect(() => {
         let id = setTimeout(() => setDateTime(new Date()), 1000);
@@ -73,6 +91,77 @@ const BillCreatePage = React.memo((props: Props) => {
         setBillDetail(newBooks);
     };
 
+    const handleClickCreate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        let settings: AppConstraint | undefined = LocalStorage.get("settings");
+        
+        if (!settings) {
+            toast.error("Hãy cài đặt qui định trước khi tạo hóa đơn", { toastId: "ERR_SETTING_NOT_FOUND" });
+            return;
+        }
+
+        if (customer.FullName === "") {
+            toast.error("Hãy điền họ tên khách hàng", { toastId: "BILL_BLANK_NAME" });
+            return;
+        }
+
+        if (customer.PhoneNumber === "") {
+            toast.error("Hãy điền SĐT khách hàng", { toastId: "BILL_BLANK_PHONE" });
+            return;
+        }
+
+        if (billDetail.length === 0) {
+            toast.error("Cần nhập ít nhất 1 dòng sách", { toastId: "ERR_NO_IMPORT_BOOK" });
+            return;
+        }
+
+        if (billDetail.map(book => book.Name).includes("")) {
+            toast.error("Hãy nhập đầy đủ tên sách", { toastId: "BILL_UNDEFINED_NAME"});
+            return;
+        }
+        
+        const amountNotValid = billDetail.filter(book => book.Amount <= 0);
+        if (amountNotValid.length > 0) {
+            toast.error(
+                <>
+                    Số lượng sách phải lớn hơn 0:
+                    <ul>
+                        {amountNotValid.map((book, index) => 
+                            <li key={index} className="font-bold">&bull; {book.Name}</li>
+                        )}
+                    </ul>
+                </>,
+                { toastId: "BILL_INVALID_AMOUNT" }
+            );
+        }
+
+        const data: BillPOST = {
+            Customer: customer,
+            BillDate: dateToString(dateTime) ?? "",
+            BillDetails: billDetail.map(book => {
+                let soldPrice = book.ImportPrice * sellPriceMultiplier;
+                return {
+                    Book: {
+                        Name: book.Name,
+                        Category: book.Category
+                    },
+                    Amount: book.Amount,
+                    SoldPrice: Number.isNaN(soldPrice) ? 0 : soldPrice
+            }}),
+            TotalPrice: sum,
+            Paid: paid,
+            Debt: sum - paid
+        };
+        let response = await jsonFetch(billsApiUrl, "POST", data);
+        switch (response.status) {
+            case 201:
+                toast.success("Đã tạo hóa đơn thành công", { toastId: "BILL_SUCCESS" });
+                break;
+            case 400:
+                toast.error("Đã gặp sự cố trên server", { toastId: "BILL_SERVER_ERROR" });
+        }
+    }
+
     return (
         <PageLayout
             id={props.id}
@@ -85,12 +174,12 @@ const BillCreatePage = React.memo((props: Props) => {
             <form
                 className={combineClassnames(
                     THEME.text,
-                    "w-full flex flex-col items-center p-3 [&>*]:my-1"
+                    "w-full flex flex-col items-center p-3 [&>*]:my-1 [&>*]:w-7/12 [&>*]:lg:w-5/12 [&>*]:flex [&>*]:justify-between"
                 )}
             >
                 <Input 
                     label="Khách hàng:" 
-                    className="w-7/12 flex justify-between"
+                    inputClassName="w-36"
                     type="text"
                     placeholder="Họ tên"
                     value={customer.FullName}
@@ -104,7 +193,6 @@ const BillCreatePage = React.memo((props: Props) => {
                 />
                 <Input
                     label="Số điện thoại:"
-                    className="w-7/12 flex justify-between"
                     inputClassName="w-32"
                     type="tel"
                     value={customer.PhoneNumber}
@@ -118,10 +206,9 @@ const BillCreatePage = React.memo((props: Props) => {
                 />
                 <Input
                     label="Ngày lập:"
-                    className="w-7/12 flex justify-between"
                     inputClassName="w-48"
                     type="datetime-local"
-                    value={dateTime.toISOString().slice(0,16)}
+                    value={dateTimeToLocalISOString(dateTime)}
                     readonly
                     onChange={handleChangeDateTime}
                 />
@@ -186,11 +273,17 @@ const BillCreatePage = React.memo((props: Props) => {
                         <TableCell
                             value={book.Amount}
                             onChange={(e) => {
+                                const targetBook: Book = importedBooks.data ?
+                                    importedBooks.data.filter(b => b.Name === book.Name)[0] :
+                                    { id: -1, Name: "", Category: "", Author: "", Amount: 0, ImportPrice: 0 };
+
                                 const newBooks = billDetail.map((b, i) => {
                                     if (i !== index) {
                                         return b;
                                     }
-                                    return { ...b, Amount: Number(e.target.value.split(",").join("")) }
+
+                                    let newAmt = Number(e.target.value.split(",").join(""));
+                                    return { ...b, Amount: newAmt < targetBook.Amount ? newAmt : targetBook.Amount }
                                 });
 
                                 setBillDetail(newBooks);
@@ -198,14 +291,45 @@ const BillCreatePage = React.memo((props: Props) => {
                         />
                         <TableCell
                             readOnly
-                            value={book.ImportPrice}
+                            value={book.ImportPrice * sellPriceMultiplier}
                         />
                     </TableRow>
                 )}
             </Table>
 
             <PlusButton onClick={handleClickAdd} />
+
+            <div
+                className={combineClassnames(
+                    THEME.textHighlight,
+                    "flex flex-col items-end w-11/12"
+                )}
+            >
+                <span className="block font-bold">Tổng tiền: <output>{sum}VNĐ</output></span>
+                <label className="block flex">
+                    <span>Số tiền trả:&nbsp;</span>
+                    <textarea
+                        value={stringToStrNumber(paid.toString())}
+                        onChange={(e) => {
+                            let numVal = Number(e.target.value.split(",").join(""));
+                            setPaid(numVal > sum ? sum : numVal)
+                        }}
+                        className={combineClassnames(
+                            THEME.bg,
+                            THEME.borderHighLight,
+                            "resize-none border"
+                        )}
+                        rows={1}
+                        cols={paid.toString().length + 2}
+                    />&nbsp;VNĐ
+                </label>
+                <span className="font-bold block">Còn lại: <output>{sum - paid}VNĐ</output></span>
+            </div>
             <Hr />
+
+            <LargeButton onClick={handleClickCreate}>
+                LẬP
+            </LargeButton>
         </PageLayout>
     );
 });

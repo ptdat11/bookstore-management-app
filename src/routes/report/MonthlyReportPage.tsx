@@ -5,7 +5,7 @@ import combineClassnames from "../../submodules/string-processing/combine-classn
 import Collapse from "../../components/collapse/Collapse";
 import Input from "../../components/form-input/Input";
 import Table from "../../components/table/Table";
-import Report from "../../interfaces/report";
+import { BookReport, DebtReport } from "../../interfaces/report";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";
 import { BooksPerMonthGET } from "../../interfaces/api-formats/books";
 import TableRow from "../../components/table/TableRow";
@@ -16,8 +16,8 @@ import { apiUrlSelector } from "../../states/system-states";
 interface Props extends BasePropsPage {}
 
 const MonthlyReportPage = React.memo((props: Props) => {
-    const [booksReport, setBooksReport] = useState<Report[]>([]);
-    const [debtReports, setDebtReport] = useState<Report[]>([]);
+    const [booksReport, setBooksReport] = useState<BookReport[]>([]);
+    const [debtReports, setDebtReport] = useState<DebtReport[]>([]);
     const booksReportApiUrl = useRecoilValue(apiUrlSelector("books-per-month"));
     const debtReportApiUrl = useRecoilValue(apiUrlSelector("customers-per-month"));
 
@@ -50,7 +50,7 @@ const MonthlyReportPage = React.memo((props: Props) => {
                             console.log(data);
                             let response = await jsonFetch(booksReportApiUrl, "GET", data);
 
-                            const report: Report[] = await response.json();
+                            const report: BookReport[] = await response.json();
                             setBooksReport(report);
                         }}
                     />
@@ -115,7 +115,7 @@ const MonthlyReportPage = React.memo((props: Props) => {
                             console.log(data);
                             let response = await jsonFetch(debtReportApiUrl, "GET", data);
 
-                            const report: Report[] = await response.json();
+                            const report: DebtReport[] = await response.json();
                             setDebtReport(report);
                         }}
                     />
@@ -136,22 +136,22 @@ const MonthlyReportPage = React.memo((props: Props) => {
                                     />
 
                                     <TableCell 
-                                        value={report.Name}
+                                        value={report.PhoneNumber}
                                         readOnly
                                     />
 
                                     <TableCell
-                                        value={report.result_by_month?.FirstAmount}
+                                        value={report.result_by_month?.FirstDebt}
                                         readOnly
                                     />
 
                                     <TableCell 
-                                        value={report.result_by_month?.ImportCount}
+                                        value={report.result_by_month?.DebtSum}
                                         readOnly
                                     />
 
                                     <TableCell 
-                                        value={report.result_by_month?.LastAmount}
+                                        value={report.result_by_month?.LastDebt}
                                         readOnly
                                     />
                                 </TableRow>

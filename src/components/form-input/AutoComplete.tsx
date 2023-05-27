@@ -46,7 +46,7 @@ const AutoComplete = ((props: Props, ref?: ForwardedRef<AutoCompleteRef>) => {
                 onFocus={() => setFocusing(true)}
             />
             {
-                (suggestionList && focusing) &&
+                (suggestionList && suggestionList.length > 0 && focusing) &&
                 <ul
                     className={combineClassnames(
                         THEME.bg,

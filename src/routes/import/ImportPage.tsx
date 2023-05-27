@@ -3,7 +3,7 @@ import { BasePropsPage } from "../../submodules/base-props/base-props";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { importBookState, importFlagState } from "../../states/book-states";
 import PageLayout from "../../components/layout/page-layout/PageLayout";
-import { dateToString } from "../../submodules/string-processing/date-string";
+import { dateTimeToLocalISOString, dateToString } from "../../submodules/string-processing/date-string";
 import Table from "../../components/table/Table";
 import TableRow from "../../components/table/TableRow";
 import combineClassnames from "../../submodules/string-processing/combine-classname";
@@ -26,7 +26,7 @@ interface Props extends BasePropsPage {}
 
 const ImportPage = React.memo((props: Props) => {
     const [books, setBooks] = useRecoilState(importBookState);
-    const [date, setDate] = useState<Date>(new Date());
+    const [dateTime, setDateTime] = useState<Date>(new Date());
     const booksApiUrl = useRecoilValue(apiUrlSelector("books"));
     const importApiUrl = useRecoilValue(apiUrlSelector("import-logs-create"));
     const [importFlag, setImportFlag] = useRecoilState(importFlagState);
@@ -41,6 +41,12 @@ const ImportPage = React.memo((props: Props) => {
         newBookNameRef.current?.focus();
     }, [books.length]);
 
+    useEffect(() => {
+        let id = setTimeout(() => setDateTime(new Date()), 1000);
+
+        return () => clearTimeout(id);
+    });
+
     const deleteBookAt = (index: number) => {
         const newBooks = books.filter(book => book.id !== index).map(book => {
             if (book.id < index) {
@@ -54,7 +60,7 @@ const ImportPage = React.memo((props: Props) => {
 
     const handleChangeDate = (e: ChangeEvent<HTMLInputElement>) => {
         const newDate = new Date(e.target.value);
-        setDate(newDate);
+        setDateTime(newDate);
     };
 
     const handleClickAdd = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -81,20 +87,19 @@ const ImportPage = React.memo((props: Props) => {
         let settings: AppConstraint | undefined = LocalStorage.get("settings");
         
         if (!settings) {
-            toast.error("Đã xảy ra lỗi", { toastId: "ERR_SETTING_NOT_FOUND" });
+            toast.error("Hãy cài đặt qui định trước khi nhập sách", { toastId: "ERR_SETTING_NOT_FOUND" });
             return;
         }
 
         let s = settings as AppConstraint;
 
         if (books.length === 0) {
-            toast.error("Cần nhập ít nhất 1 dòng sách", { toastId: "ERR_NO_IMPORT_BOOK" });
+            toast.error("Cần nhập ít nhất 1 dòng sách", { toastId: "IMPORT_NO_IMPORT_BOOK" });
             return;
         }
 
-        const lastBook = books.at(-1) as Book;
         if (books.map(book => book.Name).includes("")) {
-            toast.error("Hãy nhập đầy đủ tên sách");
+            toast.error("Hãy nhập đầy đủ tên sách", { toastId: "IMPORT_UNDEFINED_NAME" });
             return;
         }
 
@@ -113,7 +118,7 @@ const ImportPage = React.memo((props: Props) => {
         }
 
         const data: ImportLogPOST[] = books.map<ImportLogPOST>(book => ({
-                ImportDate: dateToString(date) as string,
+                ImportDate: dateToString(dateTime) as string,
                 Book: {
                     Name: book.Name,
                     Category: book.Category,
@@ -130,7 +135,7 @@ const ImportPage = React.memo((props: Props) => {
                 setImportFlag(!importFlag);
                 break;
             case 400:
-                toast.error(<>Không thể nhập sách tồn trong kho còn nhiều hơn <b>{s.AmountNeedImport}</b></>, { toastId: "IMPORT_EXCEED_STORED_AMOUNT" });
+                toast.error("Đã gặp sự cố server", { toastId: "IMPORT_SERVER_ERROR" });
         }
     };
 
@@ -148,9 +153,9 @@ const ImportPage = React.memo((props: Props) => {
                 <Input 
                     className="my-3"
                     label="Ngày nhập:" 
-                    type="date"
-                    value={dateToString(date)}
-                    readonly
+                    type="datetime-local"
+                    value={dateTimeToLocalISOString(dateTime)}
+                    // readonly
                     onChange={handleChangeDate}
                 />
                 <Table

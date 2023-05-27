@@ -28,7 +28,7 @@ const NavItem: React.FC<Props> = React.memo((props) => {
                 className={combineClassnames(
                     THEME.bgSemi,
                     THEME.textHighlight,
-                    "mb-1 max-lg:group-active:block max-lg:group-hover:block hidden absolute z-10 px-3 py-1 bottom-14 whitespace-nowrap rounded-lg"
+                    "mb-1 max-lg:group-hover:block hidden absolute z-10 px-3 py-1 bottom-14 whitespace-nowrap rounded-lg"
                 )}
             >
                 {props.title}
