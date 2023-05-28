@@ -14,12 +14,11 @@ const CardList: React.FC<Props> = React.memo((props) => {
         <section
             className={combineClassnames(
                 props.className,
-                THEME.text,
                 "flex flex-wrap items-center"
             )}
             style={{...props.style}}
         >
-            {props.title}: 
+            <span className={THEME.textHighlight}>{props.title}: </span>
             {props.children}
             <PlusButton 
                 className="ml-1"

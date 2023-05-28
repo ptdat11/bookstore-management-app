@@ -13,6 +13,9 @@ import Table from "../../components/table/Table";
 import TableRow from "../../components/table/TableRow";
 import TableCell from "../../components/table/TableCell";
 import { apiUrlSelector } from "../../states/system-states";
+import { toast } from "react-toastify";
+import Input from "../../components/form-input/Input";
+import LargeButton from "../../components/button/LargeButton";
 
 interface Props extends BasePropsPage {}
 
@@ -62,7 +65,7 @@ const SearchPage = React.memo((props: Props) => {
             )}
             style={{...props.style}}
         >
-            <div className="w-10/12 lg:w-9/12 pt-2 mx-auto">
+            <div className="w-10/12 lg:w-9/12 pt-2 mx-auto flex flex-col">
                 {/* Filter lists */}
                 <FilterList
                     title="Thể loại"
@@ -74,36 +77,28 @@ const SearchPage = React.memo((props: Props) => {
                 />
 
                 {/* Search bar */}
-                <div
-                    className={combineClassnames(
-                        "w-full h-10 flex items-center box-border"
+                <Input 
+                    ref={searchBarRef}
+                    label="Tên sách:"
+                    className="flex items-center w-full mt-1 mb-3"
+                    inputClassName={combineClassnames(
+                        THEME.bg,
+                        THEME.text,
+                        "grow h-full pl-1 border-slate-500 outline-none text-lg"
                     )}
+                    type="text"
+                    value={searchKey}
+                    placeholder="Không bắt buộc"
+                    onChange={handleChangeSearch}
+                />
+                <LargeButton
+                    className={combineClassnames(
+                        "mx-auto my-1"
+                    )}
+                    onClick={handleClickSearch}
                 >
-                    <input 
-                        ref={searchBarRef}
-                        className={combineClassnames(
-                            THEME.bg,
-                            THEME.text,
-                            "grow h-full pl-1 border border-slate-500 outline-none text-lg"
-                        )}
-                        type="text"
-                        value={searchKey}
-                        placeholder="Tên sách"
-                        onChange={handleChangeSearch}
-                    />
-                    <button 
-                        className={combineClassnames(
-                            THEME.bgSemi,
-                            THEME.active,
-                            "h-full w-10 p-0 flex justify-center items-center border border-gray-400 dark:border-slate-500 bg-slate-300 rounded-none"
-                        )}
-                        onClick={handleClickSearch}
-                    >
-                        <svg className="stroke-gray-900 dark:stroke-slate-100" width="24" height="24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d="m19 19-3.5-3.5"></path><circle cx="11" cy="11" r="6" fill="none"></circle>
-                        </svg>
-                    </button>
-                </div>
+                    TRA CỨU
+                </LargeButton>
             </div>
 
                 {/* Result table */}

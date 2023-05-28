@@ -14,6 +14,9 @@ import { apiUrlSelector } from "../../states/system-states";
 import Customer from "../../interfaces/customer";
 import LocalStorage from "../../submodules/local-storage/local-storage";
 import AppConstraint from "../../interfaces/app-constraint";
+import { clamp } from "../../submodules/math/clamp";
+import TextArea from "../../components/form-input/TextArea";
+import { stringToStrNumber } from "../../submodules/string-processing/number-string";
 
 interface Props extends BasePropsPage {}
 
@@ -37,6 +40,7 @@ const PayDebtPage = React.memo((props: Props) => {
     });
 
     const handleClickPay = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        console.log(customer.PhoneNumber);
         if (
             customer.PhoneNumber === "" ||
             !phoneMatched.current ||
@@ -66,44 +70,24 @@ const PayDebtPage = React.memo((props: Props) => {
                 }
                 else toast.error("Server đã xảy ra sự cố", { toastId: "DEBT_SERVER_ERR" });
                 return;
-            case 201:
-                toast.success("Đã thu nợ thành công", { toastId: "DEBT_SUCCESS" });
-        }
-    };
-
-    return (
-        <PageLayout
-            id={props.id}
-            className={combineClassnames(
-                props.className
-            )}
-            style={{...props.style}}
-        >
+                case 201:
+                    toast.success("Đã thu nợ thành công", { toastId: "DEBT_SUCCESS" });
+                }
+            };
+            
+            return (
+                <PageLayout
+                id={props.id}
+                className={combineClassnames(
+                    props.className
+                    )}
+                    style={{...props.style}}
+                    >
             <form className="w-11/12 lg:w-8/12 mx-auto [&>*]:block [&>*]:flex [&>*]:justify-between">
-                <Input 
-                    className={combineClassnames(
-                        THEME.bgSemi,
-                        "p-1 my-2 rounded items-center"
-                    )}
-                    inputClassName="w-40 lg:w-48"
-                    label="Khách hàng"
-                    value={customer.FullName}
-                    placeholder="Họ tên"
-                    type="text"
-                />
                 <Input
                     className={combineClassnames(
                         THEME.bgSemi,
-                        "p-1 my-2 rounded items-center"
-                    )}
-                    inputClassName="w-40 lg:w-48"
-                    label="Địa chỉ"
-                    value={customer.Address}
-                    type="text"
-                />
-                <Input
-                    className={combineClassnames(
-                        THEME.bgSemi,
+                        THEME.borderHighLight,
                         "p-1 my-2 rounded items-center"
                     )}
                     inputClassName="w-40 lg:w-48"
@@ -112,6 +96,10 @@ const PayDebtPage = React.memo((props: Props) => {
                     type="tel"
                     onChange={(e) => setCustomer({ ...customer, PhoneNumber: e.target.value })}
                     onBlur={async (e) => {
+                        if (customer.PhoneNumber === "") {
+                            return;
+                        }
+            
                         let response = await jsonFetch(`${customerApiUrl}/${e.target.value}`, "GET");
                         switch (response.status) {
                             case 404:
@@ -127,20 +115,43 @@ const PayDebtPage = React.memo((props: Props) => {
                         }
                     }}
                 />
+                <Input 
+                    className={combineClassnames(
+                        // THEME.bgSemi,
+                        "p-1 my-2 rounded items-center pointer-events-none"
+                        )}
+                    inputClassName="w-40 lg:w-48"
+                    label="Khách hàng"
+                    value={customer.FullName}
+                    readonly
+                    type="text"
+                />
                 <Input
                     className={combineClassnames(
-                        THEME.bgSemi,
-                        "p-1 my-2 rounded items-center"
+                        // THEME.bgSemi,
+                        "p-1 my-2 rounded items-center pointer-events-none"
+                    )}
+                    inputClassName="w-40 lg:w-48"
+                    label="Địa chỉ"
+                    value={customer.Address}
+                    readonly
+                    type="text"
+                />
+                <Input
+                    className={combineClassnames(
+                        // THEME.bgSemi,
+                        "p-1 my-2 rounded items-center pointer-events-none"
                     )}
                     inputClassName="w-40 lg:w-48"
                     label="Email"
                     value={customer.Email}
+                    readonly
                     type="email"
                 />
                 <Input
                     className={combineClassnames(
-                        THEME.bgSemi,
-                        "p-1 my-2 rounded items-center"
+                        // THEME.bgSemi,
+                        "p-1 my-2 rounded items-center pointer-events-none"
                     )}
                     inputClassName="w-[11.8rem] lg:w-48"
                     label="Ngày thu tiền"
@@ -148,7 +159,7 @@ const PayDebtPage = React.memo((props: Props) => {
                     value={dateTimeToLocalISOString(dateTime)}
                     type="datetime-local"
                 />
-                <Input 
+                {/* <Input 
                     className={combineClassnames(
                         THEME.bgSemi,
                         "p-1 my-2 rounded items-center"
@@ -156,9 +167,26 @@ const PayDebtPage = React.memo((props: Props) => {
                     inputClassName="w-40 lg:w-48"
                     label="Số tiền thu (VNĐ)"
                     value={debtPaid}
+                    step={1000}
                     type="number"
                     onChange={(e) => {
-                        let newDebtPaid = Number(e.target.value.split(",").join(""));
+                        let newDebtPaid = Number.parseInt(e.target.value.split(",").join(""));
+                        newDebtPaid = clamp(newDebtPaid, 0, Infinity);
+                        setDebtPaid(newDebtPaid);
+                    }}
+                /> */}
+                <TextArea
+                    className={combineClassnames(
+                        THEME.bgSemi,
+                        "p-1 my-2 rounded items-center"
+                    )}
+                    textAreaClassName="w-40 lg:w-48 resize-none"
+                    label="Số tiền thu (VNĐ)"
+                    value={stringToStrNumber(debtPaid.toString())}
+                    rows={1}
+                    onChange={(e) => {
+                        let newDebtPaid = Number.parseInt(e.target.value.split(",").join(""));
+                        newDebtPaid = clamp(newDebtPaid, 0, Infinity);
                         setDebtPaid(newDebtPaid);
                     }}
                 />

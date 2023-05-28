@@ -29,7 +29,7 @@ const MonthlyReportPage = React.memo((props: Props) => {
             )}
             style={{...props.style}}
         >
-            <div className="w-full">
+            <div className="w-full p-5">
                 <Collapse 
                     className="w-[97%] lg:w-10/12 mx-auto my-4"
                     title="Báo cáo tồn" 

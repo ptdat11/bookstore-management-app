@@ -5,6 +5,7 @@ import Card from "../../components/card-list/Card";
 import CardRef from "../../interfaces/refs/card-ref";
 import { RecoilState, useRecoilState } from "recoil";
 import { toast } from "react-toastify";
+import { THEME } from "../../settings";
 
 interface Props extends BaseProps {
     title?: string,
@@ -37,6 +38,8 @@ const FilterList: React.FC<Props> = React.memo((props) => {
     return (
         <CardList
             title={props.title}
+            className={props.className}
+            style={{...props.style}}
             onClickPlus={() => {
                 if (filterList.length > 0 && filterList.at(-1) === "") {
                     toast.warning("Hãy điền thông tin còn trống trước khi thêm", { toastId: `FILTER_EMPTY_INPUT_${props.title}` })
@@ -50,6 +53,7 @@ const FilterList: React.FC<Props> = React.memo((props) => {
             {filterList.map((item, index) => 
                     <Card
                         key={index}
+                        className={THEME.text}
                         ref={lastCardRef}
                         value={item}
                         onClickX={(e) => {

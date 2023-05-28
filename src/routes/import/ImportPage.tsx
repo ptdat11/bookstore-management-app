@@ -135,6 +135,7 @@ const ImportPage = React.memo((props: Props) => {
                 setImportFlag(!importFlag);
                 break;
             case 400:
+                console.log(await response.text())
                 toast.error("Đã gặp sự cố server", { toastId: "IMPORT_SERVER_ERROR" });
         }
     };

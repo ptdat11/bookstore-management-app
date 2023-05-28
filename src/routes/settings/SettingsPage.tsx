@@ -67,7 +67,7 @@ const SettingsPage = React.memo((props: Props) => {
             )}
             style={{...props.style}}
         >
-            <div className="flex flex-col p-5 items-center">
+            <div className="p-5 items-center">
                 <Collapse
                     className="w-[97%] lg:w-10/12 mx-auto my-4"
                     title="Qui định" 
@@ -183,7 +183,7 @@ const SettingsPage = React.memo((props: Props) => {
                     <Input
                         className={combineClassnames(
                             THEME.bgSemi,
-                            "w-[97%] lg:w-11/12 p-1 my-2 rounded block flex justify-between items-center"
+                            " w-11/12 p-1 my-2 rounded block flex justify-between items-center"
                         )}
                         inputClassName="w-56"
                         label="URL máy chủ"

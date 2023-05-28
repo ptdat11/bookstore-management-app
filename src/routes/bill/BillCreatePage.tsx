@@ -23,6 +23,7 @@ import AppConstraint from "../../interfaces/app-constraint";
 import LocalStorage from "../../submodules/local-storage/local-storage";
 import { BillPOST } from "../../interfaces/api-formats/bills";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";
+import { clamp } from "../../submodules/math/clamp";
 
 interface Props extends BasePropsPage {}
 
@@ -312,7 +313,8 @@ const BillCreatePage = React.memo((props: Props) => {
                         value={stringToStrNumber(paid.toString())}
                         onChange={(e) => {
                             let numVal = Number(e.target.value.split(",").join(""));
-                            setPaid(numVal > sum ? sum : numVal)
+                            numVal = clamp(numVal, 0, sum);
+                            setPaid(numVal);
                         }}
                         className={combineClassnames(
                             THEME.bg,
@@ -323,7 +325,7 @@ const BillCreatePage = React.memo((props: Props) => {
                         cols={paid.toString().length + 2}
                     />&nbsp;VNĐ
                 </label>
-                <span className="font-bold block">Còn lại: <output>{stringToStrNumber((sum - paid).toString())}VNĐ</output></span>
+                <span className="font-bold block">Còn lại: <output>{(sum - paid).toLocaleString()}VNĐ</output></span>
             </div>
             <Hr />
 

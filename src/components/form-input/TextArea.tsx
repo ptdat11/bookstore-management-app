@@ -1,29 +1,25 @@
-import React, { ForwardedRef, HTMLInputTypeAttribute, forwardRef } from "react";
+import React, { ForwardedRef, forwardRef } from "react";
 import { BaseProps } from "../../submodules/base-props/base-props";
 import combineClassnames from "../../submodules/string-processing/combine-classname";
 import { THEME } from "../../settings";
 
 interface Props extends BaseProps {
-    inputClassName?: string,
+    textAreaClassName?: string,
     label?: string,
-    type?: HTMLInputTypeAttribute,
-    value?: number | string,
-    checked?: boolean,
-    placeholder?: string,
-    step?: string | number,
-    readonly?: boolean,
-    onChange?: React.ChangeEventHandler<HTMLInputElement>,
-    onBlur?: React.FocusEventHandler<HTMLInputElement>
-};
+    value?: string | number | readonly string[]
+    rows?: number,
+    cols?: number,
+    onChange?: React.ChangeEventHandler<HTMLTextAreaElement>,
+    onBlur?: React.FocusEventHandler<HTMLTextAreaElement>
+}
 
-const Input = (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
+const TextArea = (props: Props, ref: ForwardedRef<HTMLTextAreaElement>) => {
     return (
         <label
             className={combineClassnames(
                 props.className,
                 THEME.text
             )}
-            style={{...props.style}}
         >
             <span
                 className={combineClassnames(
@@ -32,20 +28,18 @@ const Input = (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
             >
                 {props.label}
             </span>
-            <input
+
+            <textarea
                 ref={ref}
                 className={combineClassnames(
-                    props.inputClassName,
+                    props.textAreaClassName,
                     THEME.border,
                     THEME.bg,
                     "h-min my-auto leading-8 ml-3 rounded-sm border"
                 )}
-                type={props.type}
                 value={props.value}
-                checked={props.checked}
-                placeholder={props.placeholder}
-                readOnly={props.readonly}
-                step={props.step}
+                rows={props.rows}
+                cols={props.cols}
                 onChange={props.onChange}
                 onBlur={props.onBlur}
             />
@@ -53,4 +47,4 @@ const Input = (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
     );
 };
 
-export default React.memo(forwardRef(Input));
+export default React.memo(forwardRef(TextArea))
