@@ -24,6 +24,7 @@ import LocalStorage from "../../submodules/local-storage/local-storage";
 import { BillPOST } from "../../interfaces/api-formats/bills";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";
 import { clamp } from "../../submodules/math/clamp";
+import Customer from "../../interfaces/customer";
 
 interface Props extends BasePropsPage {}
 
@@ -36,6 +37,7 @@ const BillCreatePage = React.memo((props: Props) => {
     const importFlag = useRecoilValue(importFlagSelector);
     const booksApiUrl = useRecoilValue(apiUrlSelector("books"));
     const billsApiUrl = useRecoilValue(apiUrlSelector("bills"));
+    const customerApiUrl = useRecoilValue(apiUrlSelector("customers"));
     let sellPriceMultiplier = 105 / 100;
     let sum = billDetail.length > 0 ?
         billDetail.map(book => book.ImportPrice * sellPriceMultiplier * book.Amount).
@@ -57,6 +59,25 @@ const BillCreatePage = React.memo((props: Props) => {
 
         return () => clearTimeout(id);
     });
+
+    const handleBlurPhone = async (e: React.FocusEvent<HTMLInputElement>) => {
+        if (e.target.value === "")
+            return;
+
+        const response = await jsonFetch(
+            customerApiUrl + `/${e.target.value}`,
+            "GET"
+        );
+   
+        if (response.status === 404) {
+            return;
+        }
+        const cust: Customer = await response.json();
+        setCustomer({
+            FullName: cust.FullName,
+            PhoneNumber: customer.PhoneNumber
+        })
+    }
 
     const deleteDetailAt = (index: number) => {
         const newBooks = billDetail.filter(book => book.id !== index).map(book => {
@@ -90,6 +111,17 @@ const BillCreatePage = React.memo((props: Props) => {
             { id: newId, Name: "", Category: "", Author: "", Amount: 1, ImportPrice: 0 }
         ];
         setBillDetail(newBooks);
+    };
+
+    const handleClickDelAll = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setBillDetail([
+            { id: 0, Name: "", Category: "", Author: "", Amount: 1, ImportPrice: 0 }
+        ]);
+        setCustomer({
+            FullName: "",
+            PhoneNumber: ""
+        });
     };
 
     const handleClickCreate = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -178,6 +210,20 @@ const BillCreatePage = React.memo((props: Props) => {
                     "w-full flex flex-col items-center p-3 [&>*]:my-1 [&>*]:w-7/12 [&>*]:lg:w-5/12 [&>*]:flex [&>*]:justify-between"
                 )}
             >
+                <Input
+                    label="Số điện thoại:"
+                    inputClassName="w-32"
+                    type="tel"
+                    value={customer.PhoneNumber}
+                    onChange={(e) => {
+                        const newCustomer = {
+                            ...customer,
+                            PhoneNumber: e.target.value
+                        };
+                        setCustomer(newCustomer);
+                    }}
+                    onBlur={handleBlurPhone}
+                />
                 <Input 
                     label="Khách hàng:" 
                     inputClassName="w-36"
@@ -191,20 +237,7 @@ const BillCreatePage = React.memo((props: Props) => {
                         };
                         setCustomer(newCustomer);
                     }}
-                />
-                <Input
-                    label="Số điện thoại:"
-                    inputClassName="w-32"
-                    type="tel"
-                    value={customer.PhoneNumber}
-                    onChange={(e) => {
-                        const newCustomer = {
-                            ...customer,
-                            PhoneNumber: e.target.value
-                        };
-                        setCustomer(newCustomer);
-                    }}
-                />
+                    />
                 <Input
                     label="Ngày lập:"
                     inputClassName="w-48"
@@ -216,7 +249,7 @@ const BillCreatePage = React.memo((props: Props) => {
             </form>
 
             <Table
-                className="mx-auto"
+                className="mx-auto w-full lg:w-11/12"
                 colNames={["STT", "Sách", "Thể loại", "Số lượng", "Đơn giá bán(VNĐ)"]}
                 colWidths={[9, 35, 20, 12, 24]}
             >
@@ -268,6 +301,7 @@ const BillCreatePage = React.memo((props: Props) => {
                             }}
                         />
                         <TableCell
+                            className="pointer-events-none"
                             readOnly
                             value={book.Category}
                         />
@@ -298,8 +332,15 @@ const BillCreatePage = React.memo((props: Props) => {
                 )}
             </Table>
 
-            <PlusButton onClick={handleClickAdd} />
-
+            <div className="w-full lg:w-11/12 relative flex justify-center items-center">
+                    <PlusButton onClick={handleClickAdd} />
+                    <LargeButton
+                        className="absolute leading-5 p-1 right-0"
+                        onClick={handleClickDelAll}
+                    >
+                        Xóa tất cả
+                    </LargeButton>
+                </div>
             <div
                 className={combineClassnames(
                     THEME.textHighlight,

@@ -14,7 +14,6 @@ const Table: React.FC<Props> = React.memo((props) => {
             className={combineClassnames(
                 props.className,
                 THEME.text,
-                "w-full lg:w-11/12"
             )}
             style={{...props.style}}
         >

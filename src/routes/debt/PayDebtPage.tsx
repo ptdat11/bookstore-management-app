@@ -159,22 +159,6 @@ const PayDebtPage = React.memo((props: Props) => {
                     value={dateTimeToLocalISOString(dateTime)}
                     type="datetime-local"
                 />
-                {/* <Input 
-                    className={combineClassnames(
-                        THEME.bgSemi,
-                        "p-1 my-2 rounded items-center"
-                    )}
-                    inputClassName="w-40 lg:w-48"
-                    label="Số tiền thu (VNĐ)"
-                    value={debtPaid}
-                    step={1000}
-                    type="number"
-                    onChange={(e) => {
-                        let newDebtPaid = Number.parseInt(e.target.value.split(",").join(""));
-                        newDebtPaid = clamp(newDebtPaid, 0, Infinity);
-                        setDebtPaid(newDebtPaid);
-                    }}
-                /> */}
                 <TextArea
                     className={combineClassnames(
                         THEME.bgSemi,

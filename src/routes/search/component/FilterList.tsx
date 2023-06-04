@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { BaseProps } from "../../submodules/base-props/base-props";
-import CardList from "../../components/card-list/CardList";
-import Card from "../../components/card-list/Card";
-import CardRef from "../../interfaces/refs/card-ref";
+import { BaseProps } from "../../../submodules/base-props/base-props";
+import CardList from "../../../components/card-list/CardList";
+import Card from "../../../components/card-list/Card";
+import CardRef from "../../../interfaces/refs/card-ref";
 import { RecoilState, useRecoilState } from "recoil";
 import { toast } from "react-toastify";
-import { THEME } from "../../settings";
+import { THEME } from "../../../settings";
 
 interface Props extends BaseProps {
     title?: string,

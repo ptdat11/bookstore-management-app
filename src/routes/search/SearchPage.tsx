@@ -4,7 +4,7 @@ import PageLayout from "../../components/layout/page-layout/PageLayout";
 import combineClassnames from "../../submodules/string-processing/combine-classname";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { authorCriterionState, categoryCriterionState } from "../../states/book-states";
-import FilterList from "./FilterList";
+import FilterList from "./component/FilterList";
 import { THEME } from "../../settings";
 import Book from "../../interfaces/book";
 import { jsonFetch } from "../../submodules/networking/jsonFetch";

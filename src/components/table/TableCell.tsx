@@ -43,6 +43,7 @@ const TableCell = (props: Props, ref: ForwardedRef<CardRef>) => {
                 props.className,
                 "relative py-2 border-inherit"
             )}
+            style={{...props.style}}
         >
             <AutoComplete 
                 ref={textAreaRef}

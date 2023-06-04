@@ -82,6 +82,13 @@ const ImportPage = React.memo((props: Props) => {
         setBooks(newBooks);
     };
 
+    const handleClickDelAll = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setBooks([
+            { id: 0, Name: "", Category: "", Author: "", Amount: LocalStorage.get<AppConstraint>("settings")?.MinImport as number, ImportPrice: 0 }
+        ]);
+    };
+
     const handleClickImport = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         let settings: AppConstraint | undefined = LocalStorage.get("settings");
@@ -161,6 +168,7 @@ const ImportPage = React.memo((props: Props) => {
                     onChange={handleChangeDate}
                 />
                 <Table
+                    className="w-full lg:w-11/12"
                     colWidths={[7, 30, 15, 22, 9, 17]}
                     colNames={["STT", "Sách", "Thể loại", "Tác giả", "Số lượng", "Đơn giá nhập (VNĐ)"]}
                 >
@@ -269,7 +277,15 @@ const ImportPage = React.memo((props: Props) => {
                     })}
                 </Table>
                 
-                <PlusButton onClick={handleClickAdd} />
+                <div className="w-full lg:w-11/12 relative flex justify-center items-center">
+                    <PlusButton onClick={handleClickAdd} />
+                    <LargeButton
+                        className="absolute leading-5 p-1 right-0"
+                        onClick={handleClickDelAll}
+                    >
+                        Xóa tất cả
+                    </LargeButton>
+                </div>
                 <Hr />
 
                 <LargeButton

@@ -185,7 +185,7 @@ const SettingsPage = React.memo((props: Props) => {
                             THEME.bgSemi,
                             " w-11/12 p-1 my-2 rounded block flex justify-between items-center"
                         )}
-                        inputClassName="w-56"
+                        inputClassName="w-40 md:w-56"
                         label="URL máy chủ"
                         type="text"
                         value={urlPrefix}
