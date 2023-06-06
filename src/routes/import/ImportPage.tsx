@@ -114,12 +114,29 @@ const ImportPage = React.memo((props: Props) => {
         if (b.length > 0) {
             toast.error(
                 <>
-                    {`Số lượng nhập ít nhất là ${s.MinImport} quyển:`}
+                    Số lượng nhập ít nhất là <b>{s.MinImport}</b> quyển:
                     <ul className="font-bold">
                         {b.map((book, i) => <li key={i}>&bull; {book.Name}</li>)}
                     </ul>
                 </>, 
                 { toastId: "IMPORT_MIN_NOT_MEET" }
+            );
+            return;
+        }
+
+        const temp = books.map(book => book.Name);
+        const minExistingAmount = LocalStorage.get<AppConstraint>("settings")?.AmountNeedImport;
+        const exceededBooks = importedBooks.data ?
+            importedBooks.data.filter(book => temp.includes(book.Name) && book.Amount > (minExistingAmount ? minExistingAmount : 0)) :
+            [];
+        if (exceededBooks.length > 0) {
+            toast.error(
+                <>
+                    Những đầu sách sau hiện có hơn <b>{minExistingAmount}</b> quyển, không thể nhập:
+                    <ul>
+                        {exceededBooks.map(book => <li className="font-bold">&bull; {book.Name}</li>)}
+                    </ul>
+                </>
             );
             return;
         }

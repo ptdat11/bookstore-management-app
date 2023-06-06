@@ -26,7 +26,8 @@ const PayDebtPage = React.memo((props: Props) => {
         Address: "",
         PhoneNumber: "",
         Email: ""
-    })
+    });
+    const [debt, setDebt] = useState(0);
     const [dateTime, setDateTime] = useState(new Date());
     const [debtPaid, setDebtPaid] = useState(0);
     const phoneMatched = useRef(false);
@@ -75,14 +76,14 @@ const PayDebtPage = React.memo((props: Props) => {
                 }
             };
             
-            return (
-                <PageLayout
-                id={props.id}
-                className={combineClassnames(
-                    props.className
-                    )}
-                    style={{...props.style}}
-                    >
+    return (
+        <PageLayout
+            id={props.id}
+            className={combineClassnames(
+                props.className
+            )}
+            style={{...props.style}}
+        >
             <form className="w-11/12 lg:w-8/12 mx-auto [&>*]:block [&>*]:flex [&>*]:justify-between">
                 <Input
                     className={combineClassnames(
@@ -104,13 +105,22 @@ const PayDebtPage = React.memo((props: Props) => {
                         switch (response.status) {
                             case 404:
                                 toast.error("Không thể tìm thấy khách hàng với SĐT này");
+                                setCustomer({
+                                    FullName: "",
+                                    Address: "",
+                                    Email: "",
+                                    PhoneNumber: customer.PhoneNumber
+                                });
+                                setDebt(0);
                                 phoneMatched.current = false;
                                 break;
                             case 200:
                                 toast.success("SĐT hợp lệ");
                                 phoneMatched.current = true;
-                                const cust: Customer = await response.json();
+                                const custRes = await response.json();
+                                const cust: Customer = custRes;
                                 setCustomer(cust);
+                                setDebt(custRes.Debt);
                                 break;
                         }
                     }}
@@ -170,7 +180,9 @@ const PayDebtPage = React.memo((props: Props) => {
                     rows={1}
                     onChange={(e) => {
                         let newDebtPaid = Number.parseInt(e.target.value.split(",").join(""));
-                        newDebtPaid = clamp(newDebtPaid, 0, Infinity);
+                        if (LocalStorage.get<AppConstraint>("settings")?.PaidNotGreaterThanDebt)
+                            newDebtPaid = clamp(newDebtPaid, 0, debt);
+                        else newDebtPaid = clamp(newDebtPaid, 0, Infinity);
                         setDebtPaid(newDebtPaid);
                     }}
                 />

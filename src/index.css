@@ -2,13 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Questrial';
-  src: url('./assets/fonts/Roboto/Roboto-Medium.ttf');
-}
-
 :root {
-  font-family: "Questrial";
+  font-family: "Inter", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 

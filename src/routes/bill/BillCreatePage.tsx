@@ -70,6 +70,10 @@ const BillCreatePage = React.memo((props: Props) => {
         );
    
         if (response.status === 404) {
+            setCustomer({
+                FullName: "",
+                PhoneNumber: customer.PhoneNumber
+            });
             return;
         }
         const cust: Customer = await response.json();
@@ -348,7 +352,7 @@ const BillCreatePage = React.memo((props: Props) => {
                 )}
             >
                 <span className="block font-bold">Tổng tiền: <output>{stringToStrNumber(sum.toString())}VNĐ</output></span>
-                <label className="block flex">
+                <label className="block flex font-bold">
                     <span>Số tiền trả:&nbsp;</span>
                     <textarea
                         value={stringToStrNumber(paid.toString())}
