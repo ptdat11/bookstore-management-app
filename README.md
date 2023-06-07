@@ -26,5 +26,5 @@ TS. Đỗ Thị Thanh Tuyền
 ### Ubuntu/Debian trong Linux
 
 1. Tiến hành tải package deb từ đường link: https://drive.google.com/file/d/1I0P9n-sk1Pg2t35mQ2E7W89UsojDxKk9/view?usp=drive_link
-2. Thực thi lệnh trên shell:
+2. Thực thi lệnh trên shell:<br>
 ```$ sudo dpkg -i path/to/bookstore-management_1.0.0_amd64.deb```
