@@ -244,7 +244,7 @@ const BillCreatePage = React.memo((props: Props) => {
                     />
                 <Input
                     label="Ngày lập:"
-                    inputClassName="w-48"
+                    inputClassName="w-52"
                     type="datetime-local"
                     value={dateTimeToLocalISOString(dateTime)}
                     readonly

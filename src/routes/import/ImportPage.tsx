@@ -177,7 +177,7 @@ const ImportPage = React.memo((props: Props) => {
             >
                 <Input 
                     className="my-3"
-                    inputClassName="w-48"
+                    inputClassName="w-52"
                     label="Ngày nhập:" 
                     type="datetime-local"
                     value={dateTimeToLocalISOString(dateTime)}
