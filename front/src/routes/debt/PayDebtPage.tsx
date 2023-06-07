@@ -115,7 +115,6 @@ const PayDebtPage = React.memo((props: Props) => {
                                 phoneMatched.current = false;
                                 break;
                             case 200:
-                                toast.success("SĐT hợp lệ");
                                 phoneMatched.current = true;
                                 const custRes = await response.json();
                                 const cust: Customer = custRes;

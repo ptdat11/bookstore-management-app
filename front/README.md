@@ -23,7 +23,7 @@ TS. Đỗ Thị Thanh Tuyền
 2. Chạy installer để cài chương trình vô máy.
 3. Sau khi cài xong, có thể mở phần mềm như bình thường từ Windows Start Menu.
 
-### Ubuntu/Debian trong Linux
+### Debian/Ubuntu
 
 1. Tiến hành tải package deb từ đường link: https://drive.google.com/file/d/1I0P9n-sk1Pg2t35mQ2E7W89UsojDxKk9/view?usp=drive_link
 2. Thực thi lệnh trên shell:<br>

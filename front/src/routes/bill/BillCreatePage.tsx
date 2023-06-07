@@ -170,6 +170,7 @@ const BillCreatePage = React.memo((props: Props) => {
                 </>,
                 { toastId: "BILL_INVALID_AMOUNT" }
             );
+            return;
         }
 
         const data: BillPOST = {

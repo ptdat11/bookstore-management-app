@@ -59,8 +59,8 @@ const ImportPage = React.memo((props: Props) => {
     };
 
     const handleChangeDate = (e: ChangeEvent<HTMLInputElement>) => {
-        const newDate = new Date(e.target.value);
-        setDateTime(newDate);
+        const input = new Date(e.target.value);
+        setDateTime(input);
     };
 
     const handleClickAdd = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -142,7 +142,7 @@ const ImportPage = React.memo((props: Props) => {
         }
 
         const data: ImportLogPOST[] = books.map<ImportLogPOST>(book => ({
-                ImportDate: dateToString(dateTime) as string,
+                ImportDate: dateTime.toISOString(),
                 Book: {
                     Name: book.Name,
                     Category: book.Category,
@@ -181,7 +181,7 @@ const ImportPage = React.memo((props: Props) => {
                     label="Ngày nhập:" 
                     type="datetime-local"
                     value={dateTimeToLocalISOString(dateTime)}
-                    readonly
+                    // readonly
                     onChange={handleChangeDate}
                 />
                 <Table
