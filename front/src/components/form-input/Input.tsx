@@ -38,7 +38,7 @@ const Input = (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
                     props.inputClassName,
                     THEME.border,
                     THEME.bg,
-                    "h-min my-auto leading-8 ml-3 rounded-sm border"
+                    "h-min my-auto leading-8 ml-3 rounded-sm border [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:visible [&::-webkit-calendar-picker-indicator]:dark:invert-0"
                 )}
                 type={props.type}
                 value={props.value}

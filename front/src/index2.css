@@ -752,12 +752,12 @@ video {
   width: 10rem;
 }
 
-.w-48 {
-  width: 12rem;
-}
-
 .w-5 {
   width: 1.25rem;
+}
+
+.w-52 {
+  width: 13rem;
 }
 
 .w-\[11\.8rem\] {
@@ -783,14 +783,6 @@ video {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-52 {
-  width: 13rem;
-}
-
-.w-56 {
-  width: 14rem;
 }
 
 .grow {
@@ -1114,6 +1106,11 @@ video {
   -webkit-text-size-adjust: 100%;
 }
 
+/* input::-webkit-calendar-picker-indicator {
+  filter: invert(1) !important;
+  visibility: visible !important;
+} */
+
 html {
   font-size: 20px;
 }
@@ -1358,6 +1355,30 @@ button:focus-visible {
   .lg\:pl-2 {
     padding-left: 0.5rem;
   }
+}
+
+.\[\&\:\:-webkit-calendar-picker-indicator\]\:visible::-webkit-calendar-picker-indicator {
+  visibility: visible;
+}
+
+.\[\&\:\:-webkit-calendar-picker-indicator\]\:invert::-webkit-calendar-picker-indicator {
+  --tw-invert: invert(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.\[\&\:\:-webkit-calendar-picker-indicator\]\:invert-0::-webkit-calendar-picker-indicator {
+  --tw-invert: invert(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+:is(.dark .\[\&\:\:-webkit-calendar-picker-indicator\]\:dark\:invert)::-webkit-calendar-picker-indicator {
+  --tw-invert: invert(100%);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+:is(.dark .\[\&\:\:-webkit-calendar-picker-indicator\]\:dark\:invert-0)::-webkit-calendar-picker-indicator {
+  --tw-invert: invert(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .\[\&\>\*\:nth-child\(even\)\]\:border-x>*:nth-child(even) {

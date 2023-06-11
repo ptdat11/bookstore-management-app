@@ -181,7 +181,7 @@ const ImportPage = React.memo((props: Props) => {
                     label="Ngày nhập:" 
                     type="datetime-local"
                     value={dateTimeToLocalISOString(dateTime)}
-                    // readonly
+                    readonly
                     onChange={handleChangeDate}
                 />
                 <Table
